@@ -1,5 +1,6 @@
 <template>
   <div class="d-flex justify-content-center">
+    {{ proyecto }}
     <b-card class="m-5 p-3"  style="width: 75%;">
       <!-- Contenido de la tarjeta -->
       <b-form>
@@ -63,7 +64,7 @@
             type="url"
           ></b-form-input>
         </b-form-group>
-        <b-form-group
+        <b-form-group 
           label="categorias:"
         >
         <b-dropdown text="Seleccionar categorria">
@@ -76,36 +77,11 @@
           <b-dropdown-item >Seleccionar</b-dropdown-item>
         </b-dropdown>
         </b-form-group>
-        <b-form-group
-          label="grupo:"
-        >
-        <b-dropdown text="Seleccionar grupo">
-          <b-form-checkbox-group v-model="grupoSelecionado" v-for="item in grupos" :key="item.id" >
-            <b-form-checkbox  :value="item.id">
-              {{ item.nombre_grupo}}
-            </b-form-checkbox>
-          </b-form-checkbox-group>
-          <b-dropdown-divider></b-dropdown-divider>
-          <b-dropdown-item >Seleccionar</b-dropdown-item>
-        </b-dropdown>
-        </b-form-group>
-        <b-form-group 
-          id="input-group-1"
-          label="instructor::"
-          label-for="input-1"
-        >
-          <b-form-input
-            id="input-1"
-            v-model="entrega.instructor"
-            type="email"
-            required
-          >    
-          </b-form-input>
-        </b-form-group>
+       
         <b-button type="reset" variant="danger">Cancelar</b-button>
         <b-button  @click="postProyecto()" class="enviar">Enviar</b-button>
       </b-form>
-      <div class="mt-3">Selected: <strong>{{this.grupoSelecionado}}</strong></div>
+      <div class="mt-3">Selected: <strong>{{this.inscrito_id}}</strong></div>
     </b-card>
   </div>
 </template>
@@ -117,35 +93,32 @@
     data() {
       return {
         perfil: this.$store.state.perfil.id,
-        grupoSelecionado:null,
-        grupo:{
-          id:null,
-          nombre_grupo:null,
-          integrantes:null,
-          proyecto:null
-        },
-        grupos:null,
+        inscrito:null,
+        inscrito_id:null,
         proyecto: { 
-          nombre_proyecto: '',
-          descripcion: '',
+          nombre_proyecto:null,
+          descripcion:null,
           foto: null,
-          codigo_fuente: '',
+          aprendiz:null,
+          codigo_fuente:null,
           categorias: [],
           autor: null,
         },
-        entrega:{
-          descrpcion_entrega: null,
-          instructor:null,
-          proyecto:null,
-          aprendiz:null,
-
-        },
         categorias: [],
-        show: true,
+   
 
       }
     },
     methods: {
+      grupo(grupos) {
+          for (let i = 0; i < grupos.length; i++) {
+            let grupo= grupos[i];
+            console.log(grupo.id)
+            return this.grupo.id
+            
+            
+          }
+        },
       async getCategoria(){
             await this.axios('http://127.0.0.1:8000/api/categoria/').then(response=>{
                 this.categorias = response.data
@@ -153,31 +126,19 @@
             })
         },
       async getGrupos(id){
-            await this.axios('http://127.0.0.1:8000/api/entregas/'+id+'/').then(response=>{
-                this.grupos = response.data.inscrito
-            })
-        },
-      async getGrupo(id){
-            await this.axios('http://127.0.0.1:8000/api/grupo/'+id+'/').then(response=>{
-                this.grupo.id = response.data.id
-                this.grupo.nombre_grupo = response.data.nombre_grupo
-                this.grupo.integrantes= response.data.integrantes
-            })
-        },
-      async editarGrupo(id){
-        await this.axios.put('http://127.0.0.1:8000/api/grupo/'+id+'/', this.grupo)
+            await this.axios('http://127.0.0.1:8000/api/grupos/'+id+'/').then(response=>{
+                this.inscrito = response.data
+                console.log(this.inscrito)
 
-      },
+            })
+            this.inscrito_id =  this.grupo(this.inscrito)
+        },
+  
       async postProyecto(){
-        await this.getGrupo(this.grupoSelecionado)
+
         await this.axios.post('http://127.0.0.1:8000/api/proyecto/', this.proyecto)
-        .then(response => {
-          // asigna el id del proyecto creado al grupo seleccionado
-          this.grupo.proyecto = response.data.id
-          this.verProyecto(this.grupo.proyecto)
-          console.log(this.grupo)
-        })
-        await this.editarGrupo(this.grupo.id)
+        
+
 
       },
       async verProyecto(id){

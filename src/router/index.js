@@ -8,7 +8,7 @@ import ListaProyectoView from '@/views/ListaProyecto.vue'
 import VerProyectoView from '@/views/VerProyecto.vue'
 import CrearProyectoView from '@/views/CrearProyecto.vue'
 import MisProyectoView from '@/views/MisProyectos.vue'
-import DetalleProyectoView from '@/views/Aprediz/DetalleProyecto.vue'
+import DetalleProyectoView from '@/views/Aprendiz/DetalleProyecto.vue'
 import EditarProyectoView from '@/views/EditarProyecto.vue'
 
 import CrearEntregaView from '@/views/CrearEntrega.vue'
