@@ -21,6 +21,7 @@
                     <b-link :href="proyecto.codigo_fuente">{{ proyecto.codigo_fuente }}</b-link>
                     <a></a>
                 </div>
+
                 <div class="m-1 p-3 position-absolute bottom-0 end-0">
                     <b-button class="m-1  mr-2" @click="editarProyecto(proyecto.id)" variant="warning">
                         <b-icon  icon="pencil"></b-icon> 

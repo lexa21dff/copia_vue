@@ -114,7 +114,7 @@
           for (let i = 0; i < grupos.length; i++) {
             let grupo= grupos[i];
             console.log(grupo.id)
-            return this.grupo.id
+            return grupo.id
             
             
           }
@@ -125,18 +125,28 @@
                 
             })
         },
-      async getGrupos(id){
-            await this.axios('http://127.0.0.1:8000/api/grupos/'+id+'/').then(response=>{
-                this.inscrito = response.data
-                console.log(this.inscrito)
-
-            })
-            this.inscrito_id =  this.grupo(this.inscrito)
+        async getGrupos(id) {
+          await this.axios('http://127.0.0.1:8000/api/grupos/' + id + '/').then(response => {
+            this.inscrito = response.data;
+            console.log(this.inscrito);
+          });
+          this.inscrito_id = this.grupo(this.inscrito);
+          console.log('inscrito_id '+this.inscrito_id)
+          this.proyecto.aprendiz = this.inscrito_id; // Asignar el valor a proyecto.aprendiz
+          console.log(this.proyecto.aprendiz)
         },
+
   
       async postProyecto(){
-
+        
+        console.log (this.proyecto)
         await this.axios.post('http://127.0.0.1:8000/api/proyecto/', this.proyecto)
+        .then(response => {
+          // asigna el id del proyecto creado al grupo seleccionado
+          let id_proyecto= response.data.id
+          this.verProyecto(id_proyecto)
+          
+        })
         
 
 
@@ -148,6 +158,7 @@
     async mounted(){
         await this.getCategoria()
         await this.getGrupos(this.perfil)
+        
         
     }
   }

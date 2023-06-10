@@ -41,38 +41,18 @@
       name:'Lista',
       data(){
           return{
-            contador:0, 
-            grupos:null,
+            perfil: this.$store.state.perfil.id,
+            
               searchValue: "",
               proyecto: [],
               proyectos: []
           }
       },
       methods:{
-        recorrerProyectosConProyecto(grupos) {
-          for (let i = 0; i < grupos.length; i++) {
-            let grupo= grupos[i];
-            this.getProyecto(grupo.proyecto_id)
-            
-          }
-        },
-
-        filtrarProyectos() {
-            return this.grupos.filter(grupo => grupo.proyecto_id !== null);
-        },
-
-        async getGrupos(id){
-            await this.axios('http://127.0.0.1:8000/api/proyectos/'+id+'/').then(response=>{
-                this.grupos = response.data.inscrito
-            })
-            this.grupos = this.filtrarProyectos()
-            this.recorrerProyectosConProyecto(this.grupos)
-        },
         async getProyecto(id){
             
-            await this.axios.get("http://127.0.0.1:8000/api/proyecto/"+id+'/').then(response=>{
-              let proyecto =response.data
-              this.proyectos.push(proyecto) 
+            await this.axios.get("http://127.0.0.1:8000/api/proyectos/"+id+'/').then(response=>{
+              this.proyectos =response.data
             })
             console.log
           },
@@ -106,7 +86,7 @@
   
       },
       mounted() {  
-          this.getGrupos(3)
+          this.getProyecto(this.perfil)
       },
           
   
