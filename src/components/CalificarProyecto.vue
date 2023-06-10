@@ -39,7 +39,7 @@
 
                 <div class="row">
                     <div class="text-end mt-3" v-if="this.proyecto.estado = 'en revision'">
-                        <b-button variant="success" @click="calificarProyecto(id)">Calificar</b-button>
+                        <b-button variant="success" @click="editarProyecto(id)">Calificar</b-button>
                     </div>
                     <div class="text-end mt-3" v-else-if="this.proyecto.estado = 'desarrollo'">
                         <b-button variant="success" @click="calificarProyecto(id)">Editar Calificacion</b-button>

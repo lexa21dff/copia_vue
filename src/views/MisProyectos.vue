@@ -1,32 +1,42 @@
 <template>
     <div>
-      <div class="cointainer d-flex justify-content-center">
-        <table>
-          <tbody>
-            <tr v-for="proyecto in proyectos " :key="proyecto.id">
-              <!-- <div class="row" >
-                <div class="container"> -->
-                  <b-card class="m-1 p-3">
-                    <div class="row">
-                      <div class="col-lg-1 col-md-1">
-                          <img class="imagen" src="../assets/2.jpg" alt="">
-                        </div>
-                        <div class="col-lg-9">
-                            <h3>{{ proyecto.nombre_proyecto }}</h3>
-                          <p ><span class="fw-lighter" >Estado: </span>{{ proyecto.estado }}</p>
-                        </div>
-                      </div>
+      <div class="cointainer">
+        <div class="row">
+
+          <div class="row justify-content-center">
+          <h1 class="text-center">Mis Proyectos</h1>
+          </div>
+        </div>
+        <div class="row">
+            
+        </div>
+        <div class="row">
+          <table>
+            <tbody>
+              <tr v-for="proyecto in proyectos " :key="proyecto.id">
+                  <div class="container"> 
+                    <b-card class="m-1 p-3">
                       <div class="row">
-                        <p class="fw-lighter">Descripcion:</p>
-                        <p>{{ descripcion(proyecto.descripcion) }}</p>
-                      </div>
-                      <img class="position-absolute bottom-0 end-0" src="../assets/iconos/verProyecto.png" alt="" @click="verProyecto(proyecto.id)">
-                  </b-card>
-                <!-- </div>
-              </div> -->
-            </tr>
-          </tbody>
-        </table>
+                        <div class="col-lg-1 col-md-1">
+                            <img class="imagen" src="../assets/2.jpg" alt="">
+                          </div>
+                          <div class="col-lg-9">
+                              <h3>{{ proyecto.nombre_proyecto }}</h3>
+                            <p ><span class="fw-lighter" >Estado: </span>{{ proyecto.estado }}</p>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <p class="fw-lighter">Descripcion:</p>
+                          <p>{{ descripcion(proyecto.descripcion) }}</p>
+                        </div>
+                        <img class="position-absolute bottom-0 end-0" src="../assets/iconos/verProyecto.png" alt="" @click="verProyecto(proyecto.id)">
+                    </b-card>
+                </div> 
+              </tr>
+            </tbody>
+          </table>
+
+        </div>
       </div>
     </div>
       
