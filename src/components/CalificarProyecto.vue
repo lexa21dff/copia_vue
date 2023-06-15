@@ -1,75 +1,63 @@
 <template>
     <div>
         <div class="container">
-            <b-card class="m-1 p-3">
-                <Proyecto></Proyecto>
+            <b-card>
+                <div class="row">
+                    <div class="col-lg-1 col-md-1">
+                        <img class="imagen" src="@/assets/2.jpg" alt="">
+                    </div>
+                    <div class="col-lg-9">
+                        <h3>{{ proyecto.nombre }}</h3>
+                        <p><span class="fw-lighter">Estado: </span>{{ proyecto.estado }}</p>
+                    </div>
+                </div>        
+                <div class="row">
+                    <p class="fw-lighter">Descripcion:</p>
+                    <p>{{ proyecto.descripcion }}</p>
+                </div>
+                <div class="row">
+                    <p class="fw-lighter">Repositorio en GitHub:</p>
+                    <b-link :href="proyecto.codigo_fuente">{{ proyecto.codigo_fuente }}</b-link>
+                    <a></a>
+                </div>
+            
                 <div class="row">
                     <b-form>
                         <b-form-group
-                          label="Calificar:"
-                          label-cols-sm="3"
-                          label-align-sm="right"
-                          class="mb-0"
-                          v-slot="{ ariaDescribedby }"
-                        >                 
-                          <b-form-radio-group
-                            class="pt-2"
-                            v-model="proyecto.estado"
-                            :aria-describedby="ariaDescribedby"
-                          >
-                            <b-form-radio 
-                              v-for="option in options"
-                              :key="option.value"
-                              :value="option.value"
-                              :id="option.id"
-                              :name="option.name"
-                              class="form-check-inline m-1"
-                            >
-                            <span class="m-1">
-
-                                {{ option}}
-                            </span>
-                            </b-form-radio>
-                          </b-form-radio-group>
+                        label="Calificacion"
+                        >
+                            <div class="form-check form-switch" v-for="option in options" :key="option">
+                              <input
+                                class="form-check-input"
+                                type="checkbox"
+                                :id="option"
+                                :checked="selectedOption === option"
+                                @change="selectOption(option)"
+                              >
+                              <label :for="option">{{ option }}</label>
+                            </div>
                         </b-form-group>
                     </b-form>
 
-
-                </div>
-
-                <div class="row">
-                    <div class="text-end mt-3" v-if="this.proyecto.estado = 'en revision'">
-                        <b-button variant="success" @click="editarProyecto(id)">Calificar</b-button>
-                    </div>
-                    <div class="text-end mt-3" v-else-if="this.proyecto.estado = 'desarrollo'">
-                        <b-button variant="success" @click="calificarProyecto(id)">Editar Calificacion</b-button>
-                    </div>
-                    <div class="text-end mt-3" v-else>
-                        <b-button variant="success" @click="calificarProyecto(id)">Calificado</b-button>
-                    </div>
-                </div>
-                
+            </div>
+            {{ selectedOption }}
             </b-card>
+
         </div>
     </div>
-</template>
+  </template>
+  
+  <script>
+  import axios from 'axios'
 
-<script>
-import Proyecto from   '@/components/proyecto.vue'
-import axios from 'axios'
+  export default {
 
-export default{
-    name:'Lista',
-    components:{
-        Proyecto
-
-    },
-    data(){
-        return{
-            options: ['en revision','desarrollo', 'terminado'],
-            tipo:null,
-            calificar:false,
-            proyecto: {
+    data() {
+      return {
+        proyecto_estado:null,
+        selectedOption: null,
+        options: ['en revision','en desarrollo', 'terminado'],
+        proyecto: {
                 id:null,
                 nombre:null,
                 codigo_fuente:null,
@@ -77,15 +65,23 @@ export default{
                 descripcion:null,
                 estado: null,
             },
-            entregas:null
-        }
+      };
     },
-    methods:{
-        async editarProyecto(id){
-            await axios.put("http://127.0.0.1:8000/api/proyecto/"+id+"/",this.proyecto)
+    methods: {
+      selectOption(optionId) {
+        if (this.selectedOption === optionId) {
+          this.selectedOption = null; // Deseleccionar la opción actual si se hace clic nuevamente en ella
+        } else {
+          this.selectedOption = optionId; // Establecer la opción seleccionada
+          this.editarProyecto()
+        }
+      },
+      async editarProyecto(){
+            let id = this.$route.params.id
+            await axios.put("http://127.0.0.1:8000/api/calificar-proyecto/"+id+"/"+this.selectedOption+"/",)
+            this.$root.$emit("proyecto-actualizado", id); // Emitir el evento personalizado
            
         },
-
         async verProyecto (){
         let id = this.$route.params.id
         await axios.get("http://127.0.0.1:8000/api/proyecto/"+id+"/").then(response=>{
@@ -96,17 +92,19 @@ export default{
             this.proyecto.codigo_fuente=response.data.codigo_fuente
 
             });
-        }   
+            
+            this.selectedOption=this.proyecto.estado   
+            await this.verProyecto()
+        },
+        
+
     },
     async mounted(){
         await this.verProyecto()
         
     }
-}
-</script>
-<style>
-.imagen{
-    width: 100%;
-}
+  };
+  </script>
+  
+  
 
-</style>

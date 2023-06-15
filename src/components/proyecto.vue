@@ -211,6 +211,7 @@ export default{
             this.proyecto.codigo_fuente=response.data.codigo_fuente
 
             });
+            
         }   
     },
     async mounted(){
