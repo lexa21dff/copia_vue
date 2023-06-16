@@ -4,6 +4,7 @@
         <Proyecto></Proyecto>
         <Entrega></Entrega> 
         <CalificarProyecto></CalificarProyecto>
+        <CalificarEntrega></CalificarEntrega>
        </body>
 
     </div>
@@ -12,6 +13,7 @@
     import Entrega from '@/components/ListaDeEntregas.vue'
     import Proyecto from '@/components/DetalleProyecto.vue'
     import CalificarProyecto from '@/components/CalificarProyecto.vue'
+    import CalificarEntrega from '@/components/Calificar_entrega.vue'
 
    
   
@@ -21,7 +23,8 @@
       components: {
     Proyecto,
     Entrega,
-    CalificarProyecto
+    CalificarProyecto,
+    CalificarEntrega
 }
   
     }

@@ -3,12 +3,57 @@
         <b-card class="m-1">
             <h2>Entregas de </h2>
             <div class="row">
-                <p class="fw-lighter">Descripcion:</p>
-                <p>{{ entrega.descripcion_entrega }}</p>
+                <div class="container">
+                    <div class="row p-3">
+                        <p class="fw-lighter">Descripcion:</p>
+                        <p>{{ entrega.descripcion_entrega }}</p>
+                    </div>
+                    <div class="row">
+                        <p><span class="fw-lighter">Tipo De Revision: </span>{{ tipo_revision }}</p>
+                    </div>
+                    <div class="row ">
+                        <b-form>
+                            <b-form-group
+                            label="Calificacion"
+                            >
+                                <div class="form-check form-switch" v-for="option in options" :key="option">
+                                  <input
+                                    class="form-check-input"
+                                    type="checkbox"
+                                    :id="option"
+                                    :checked="selectedOption === option"
+                                    @change="selectOption(option)"
+                                  >
+                                  <label :for="option">{{ option }}</label>
+                                </div>
+                            </b-form-group>
+                            <b-form-group
+                              id="descripcion_entrega"
+                              label="Descripción de la Entrega:"
+                              label-for="descripcion_entrega"
+                            >
+                              <b-form-textarea
+                                id="descripcion_entrega"
+                                v-model="entrega.respuesta_instructor"
+                                :rows="5"
+                                required
+                              ></b-form-textarea>
+                            </b-form-group>
+                        </b-form>
+                    </div>
+                </div>
             </div>
-            <div class="row">
-                <p><span class="fw-lighter">Tipo De Revision: </span>{{ tipo_revision }}</p>
-            </div>
+            <div class="row "  >
+                      <div class="ml-auto">
+                          <b-button @click="detalleEntrega(entrega.id)" variant="secondary" class="m-1">
+                              cancelar
+                          </b-button>
+                          <b-button @click="editarEntrega(entrega)" variant="success" class="mr-2">
+                              Calificar
+                          </b-button>
+                          
+                      </div>
+                  </div>
         </b-card>
     </div>
 </template>
@@ -17,21 +62,32 @@ import axios from 'axios'
 export default{
     data(){
         return{
+            selectedOption: null,
+            options: ['Aprobado','No Aprobado'],
             entrega:{
                 id:null,
-          calificacion: null,
-          descripcion_entrega: null,
-          respuesta_instructor: null,
-          instructor: null,
-          proyecto: null,
-          tipo_revision: null,
-          autor: null
+                calificacion: null,
+                descripcion_entrega: null,
+                respuesta_instructor: null,
+                instructor: null,
+                proyecto: null,
+                tipo_revision: null,
+                autor: null
 
         },
         tipo_revision:null
         }
     },
     methods:{
+        selectOption(optionId) {
+            if (this.selectedOption === optionId) {
+              this.selectedOption = null; // Deseleccionar la opción actual si se hace clic nuevamente en ella
+            } else {
+              this.selectedOption = optionId; // Establecer la opción seleccionada
+            //   this.editarProyecto()
+            //   this.verProyecto()
+            }
+      },
         async getEntrega(){
             let id = this.$route.params.id
             await axios.get('http://127.0.0.1:8000/api/entrega/'+id+'/').then(response=>{

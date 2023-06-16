@@ -74,6 +74,7 @@
         } else {
           this.selectedOption = optionId; // Establecer la opción seleccionada
           this.editarProyecto()
+          this.verProyecto()
         }
       },
       async editarProyecto(){
@@ -94,7 +95,7 @@
             });
             
             this.selectedOption=this.proyecto.estado   
-            await this.verProyecto()
+            // await this.verProyecto()
         },
         
 
