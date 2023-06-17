@@ -28,9 +28,9 @@
                     </div> 
               </b-list-group-item>
           </b-list-group>
-            <div class="text-end mt-3">
+            <!-- <div class="text-end mt-3">
               <b-button variant="success" @click="crearEntrega(id)">Crear Entrega</b-button>
-          </div>
+          </div> -->
 
         </b-card>
         <!-- <h3 >Entregas de {{ proyecto.nombre }}</h3>

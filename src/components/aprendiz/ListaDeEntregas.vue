@@ -6,26 +6,21 @@
                 <div class="m-1 p-3">
 
                   {{ entrega.tipo_revision.nombre }}
-
                                       
                   </div>
-                  <div class="d-flex position-absolute bottom-0 end-0 m-1" >
-                      <div class="ml-auto"  v-if="entrega.calificacion =='en revision' ">
-                          <b-button @click="detalleEntrega(entrega.id)"  variant="warning" class="m-1">
-                            {{ entrega.calificacion }}
+                  <div class="d-flex position-absolute bottom-0 end-0 m-1"  >
+                      <div class="ml-auto">
+                          <b-button @click="detalleEntrega(entrega.id)" variant="primary" class="m-1">
+                              <b-icon icon="eye"></b-icon>
+                          </b-button>
+                          <b-button @click="editarEntrega(entrega)" variant="warning" class="mr-2">
+                              <b-icon icon="pencil"></b-icon>
+                          </b-button>
+                          <b-button @click="eliminarEntrega(entrega.id)" variant="danger">
+                              <b-icon icon="trash"></b-icon>
                           </b-button>
                       </div>
-                      <div class="ml-auto"  v-else-if="entrega.calificacion=='aprobado'">
-                          <b-button @click="detalleEntrega(entrega.id)" variant="info" class="m-1">
-                            {{ entrega.calificacion }}
-                          </b-button>
-                      </div>
-                      <div class="ml-auto"  v-else>
-                          <b-button @click="detalleEntrega(entrega.id)" variant="danger" class="m-1">
-                              {{ entrega.calificacion }}
-                          </b-button>
-                      </div>
-                    </div> 
+                  </div> 
               </b-list-group-item>
           </b-list-group>
             <div class="text-end mt-3">
@@ -47,23 +42,12 @@ export default{
 
     data(){
         return{
-            id : this.$route.params.id,
-            selectedOption: null,
-            options: ['en revision','en desarrollo', 'terminado'],
+          id : this.$route.params.id,
             tipo:null,
             entregas:null
         }
     },
     methods:{
-        selectOption(optionId) {
-            if (this.selectedOption === optionId) {
-              this.selectedOption = null; // Deseleccionar la opción actual si se hace clic nuevamente en ella
-            } else {
-              this.selectedOption = optionId; // Establecer la opción seleccionada
-            //   this.editarProyecto()
-            //   this.verProyecto()
-            }
-      },
         async eliminarEntrega(id){
             console.log(id)
             await axios.delete("http://127.0.0.1:8000/api/entrega/"+id+'/')
@@ -103,3 +87,4 @@ export default{
     width: 100%;
 }
 
+</style>

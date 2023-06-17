@@ -1,116 +1,38 @@
 <template>
-    <div class="container">
-        <b-card class="m-1">
-            <h2>Entregas de </h2>
-            <div class="row">
-                <div class="container">
-                    <div class="row p-3">
-                        <p class="fw-lighter">Descripcion:</p>
-                        <p>{{ entrega.descripcion_entrega }}</p>
-                    </div>
-                    <div class="row">
-                        <p><span class="fw-lighter">Tipo De Revision: </span>{{ tipo_revision }}</p>
-                    </div>
-                    <div class="row ">
-                        <b-form>
-                            <b-form-group
-                            label="Calificacion"
-                            >
-                                <div class="form-check form-switch" v-for="option in options" :key="option">
-                                  <input
-                                    class="form-check-input"
-                                    type="checkbox"
-                                    :id="option"
-                                    :checked="selectedOption === option"
-                                    @change="selectOption(option)"
-                                  >
-                                  <label :for="option">{{ option }}</label>
-                                </div>
-                            </b-form-group>
-                            <b-form-group
-                              id="descripcion_entrega"
-                              label="Descripción de la Entrega:"
-                              label-for="descripcion_entrega"
-                            >
-                              <b-form-textarea
-                                id="descripcion_entrega"
-                                v-model="entrega.respuesta_instructor"
-                                :rows="5"
-                                required
-                              ></b-form-textarea>
-                            </b-form-group>
-                        </b-form>
-                    </div>
-                </div>
-            </div>
-            <div class="row "  >
-                      <div class="ml-auto">
-                          <b-button @click="detalleEntrega(entrega.id)" variant="secondary" class="m-1">
-                              cancelar
-                          </b-button>
-                          <b-button @click="editarEntrega(entrega)" variant="success" class="mr-2">
-                              Calificar
-                          </b-button>
-                          
-                      </div>
-                  </div>
-        </b-card>
+    <div>
+      <body>
+        <div v-if="rol =='aprendiz' ">
+            <DetalleEntrega></DetalleEntrega>
+           
+        </div>
+        <div v-else>
+
+          <CalificarEntrega></CalificarEntrega>
+        </div>
+       </body>
+
     </div>
-</template>
-<script>
-import axios from 'axios'
-export default{
-    data(){
-        return{
-            selectedOption: null,
-            options: ['Aprobado','No Aprobado'],
-            entrega:{
-                id:null,
-                calificacion: null,
-                descripcion_entrega: null,
-                respuesta_instructor: null,
-                instructor: null,
-                proyecto: null,
-                tipo_revision: null,
-                autor: null
+  </template>
+  <script>
 
-        },
-        tipo_revision:null
-        }
-    },
-    methods:{
-        selectOption(optionId) {
-            if (this.selectedOption === optionId) {
-              this.selectedOption = null; // Deseleccionar la opción actual si se hace clic nuevamente en ella
-            } else {
-              this.selectedOption = optionId; // Establecer la opción seleccionada
-            //   this.editarProyecto()
-            //   this.verProyecto()
-            }
+    import CalificarEntrega from '@/components/instructor/CalificarEntrega.vue'
+
+   import DetalleEntrega from '@/components/DetalleDeEntrega.vue'
+  
+  
+    export default {
+      data() {
+          return {
+              rol: this.$store.state.rol,
+              
+          }
       },
-        async getEntrega(){
-            let id = this.$route.params.id
-            await axios.get('http://127.0.0.1:8000/api/entrega/'+id+'/').then(response=>{
-                this.entrega.id = response.data.id,
-                this.entrega.calificacion= response.data.calificacion,
-                this.entrega.descripcion_entrega= response.data.descripcion_entrega,
-                this.entrega.respuesta_instructor= response.data.respuesta_instructor,
-                this.entrega.instructor= response.data.instructor,
-                this.entrega.proyecto= response.data.proyecto,
-                this.entrega.tipo_revision= response.data.tipo_revision,
-                this.entrega.autor= response.data.autor
-            })
-        },
-        async getTipoDeRevision(id){
-            await axios.get('http://127.0.0.1:8000/api/tipo_revision/'+id+'/').then(response=>{
-                this.tipo_revision=response.data.nombre
-            })
-        }
-    },
-    async mounted(){
-        await this.getEntrega()
-        await this.getTipoDeRevision(this.entrega.tipo_revision)
-    }
+  
+      components: {
 
+    CalificarEntrega,
+    DetalleEntrega
 }
-</script>
+  
+    }
+  </script>
