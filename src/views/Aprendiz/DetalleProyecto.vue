@@ -3,13 +3,13 @@
       <body>
         <div v-if="rol !='aprendiz' ">
 
-          <Proyecto></Proyecto>
-          <Entrega></Entrega> 
-        </div>
-        <div v-else>
-
           <CalificarProyecto></CalificarProyecto>
           <CalificarEntrega></CalificarEntrega>
+        </div>
+        <div v-else>
+          <Proyecto></Proyecto>
+          <Entrega></Entrega> 
+
         </div>
        </body>
 
@@ -32,12 +32,12 @@
           }
       },
   
-      components: {
-    Proyecto,
-    Entrega,
-    CalificarProyecto,
-    CalificarEntrega
-}
+    components: {
+      Proyecto,
+      Entrega,
+      CalificarProyecto,
+      CalificarEntrega
+    }
   
     }
   </script>

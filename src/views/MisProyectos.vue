@@ -1,112 +1,65 @@
 <template>
-    <div>
-      <div class="cointainer">
-        <div class="row">
-
-          <div class="row justify-content-center">
-          <h1 class="text-center">Mis Proyectos</h1>
-          </div>
+  <div class="container">
+    <div class="row">
+      <b-card>
+        <div class="accordion" role="tablist" v-for="inscrito in inscritos" :key="inscrito.id">
+          <b-card no-body class="mb-1">
+            <b-card-header header-tag="header" class="p-1" role="tab">
+              <b-button @click="getProyecto(inscrito.ficha.id)" block v-b-toggle="'accordion-' + inscrito.id" variant="info">Ficha: {{ inscrito.ficha.codigo }}</b-button>
+            </b-card-header>
+            <b-collapse :id="'accordion-' + inscrito.id" visible accordion="my-accordion" role="tabpanel">
+              <b-card-body v-for="proyecto in proyecto" :key="proyecto.id">
+                <b-card> 
+                  <p class="card-text">{{proyecto.nombre_proyecto}}</p>
+                  <b-button  v-b-toggle="'collapse-' + inscrito.id + '-' + proyecto.id + '-inner'" size="sm">descripcion</b-button>
+                  <b-collapse :id="'collapse-' + inscrito.id + '-' + proyecto.id + '-inner'"  class="mt-2">
+                    <b-card>{{ proyecto.descripcion }}</b-card>
+                  </b-collapse>
+                  <div class="text-end mt-3">
+                    <b-button variant="success" @click="verProyecto(proyecto.id)">{{ proyecto.calificacion }}</b-button>
+                  </div> 
+                </b-card>
+              </b-card-body>
+            </b-collapse>
+          </b-card>
         </div>
-        <div class="row">
-            
-        </div>
-        <div class="row">
-          <table>
-            <tbody>
-              <tr v-for="proyecto in proyectos " :key="proyecto.id">
-                  <div class="container"> 
-                    <b-card class="m-1 p-3">
-                      <div class="row">
-                        <div class="col-lg-1 col-md-1">
-                            <img class="imagen" src="../assets/2.jpg" alt="">
-                          </div>
-                          <div class="col-lg-9">
-                              <h3>{{ proyecto.nombre_proyecto }}</h3>
-                            <p ><span class="fw-lighter" >Estado: </span>{{ proyecto.estado }}</p>
-                          </div>
-                        </div>
-                        <div class="row">
-                          <p class="fw-lighter">Descripcion:</p>
-                          <p>{{ descripcion(proyecto.descripcion) }}</p>
-                        </div>
-                        <img class="position-absolute bottom-0 end-0" src="../assets/iconos/verProyecto.png" alt="" @click="verProyecto(proyecto.id)">
-                    </b-card>
-                </div> 
-              </tr>
-            </tbody>
-          </table>
-
-        </div>
-      </div>
+      </b-card>
     </div>
-      
-    </template>
-    
-  
-  
-  <script>
-  import axios from 'axios'
+  </div>
+</template>
 
-  export default{
-      name:'Lista',
-      data(){
-          return{
-            perfil: this.$store.state.perfil.id,
-            
-              searchValue: "",
-              proyecto: [],
-              proyectos: []
-          }
-      },
-      methods:{
-        async getProyecto(id){
-            
-            await this.axios.get("http://127.0.0.1:8000/api/proyectos/"+id+'/').then(response=>{
-              this.proyectos =response.data
+
+<script>
+import axios from 'axios'
+  export default {
+    data() {
+      return {
+        inscritos:null,
+        proyecto:null
+      }
+    },
+    methods:{
+      getEntregas(id){
+              axios.get("http://127.0.0.1:8000/api/fichas-instructor/"+id+'/').then(response=>{
+              this.inscritos= response.data
             })
-            console.log
-          },
-          descripcion(descripcion){
-            // descripcion corta
-            if (descripcion.length > 100) {
-              const index = descripcion.slice(100).search(/[.]/);
-                if (index !== -1) {
-                  return descripcion.slice(0, 100 + index + 1) + '...';
-                }
-            }
-            return descripcion;
-          },
-      async search() {
-        try {
-          const response = await axios.get("buscar_proyectos/", {
-            params: {
-              search: this.searchValue,
-            },
-          });
-          this.proyecto = response.data;
-        } catch (error) {
-          console.log(error);
-        }
-        
+        },
+      getProyecto(id){
+        axios.get('http://127.0.0.1:8000/api/proyectos-instructor/'+id+'/').then(response=>{
+          this.proyecto=response.data
+        })
       },
       async verProyecto(id){
-        this.$router.push('/detalle-proyecto/'+id)
-      },
-  
-  
-      },
-      mounted() {  
-          this.getProyecto(this.perfil)
-      },
-          
-  
+      this.$router.push('/detalle-proyecto/'+id)
+    },
+
+      toggleCollapse(inscritoId, proyectoId) {
+        const collapseId = 'collapse-' + inscritoId + '-' + proyectoId + '-inner'
+        this.$root.$emit('bv::toggle::collapse', collapseId)
+      }
+    },
+    async mounted(){
+      await this.getEntregas(3)
+    }
   }
-  </script>
-
-<style>
-
-.imagen{
-    width: 100%;
-}
-
-</style>
+</script>

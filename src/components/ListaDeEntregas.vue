@@ -46,38 +46,20 @@
   </template> -->
   
   <template>
-    <div class="container" >  
-        <b-card>  
-            <b-list-group v-for="entrega in entregas" :key="entrega.id">
-              <b-list-group-item class="d-flex justify-content-between align-items-center">
-                <div class="m-1 p-3">
-
-                  {{ entrega.tipo_revision.nombre }}
-                                      
-                  </div>
-                  <div class="d-flex position-absolute bottom-0 end-0 m-1"  >
-                      <div class="ml-auto">
-                          <b-button @click="detalleEntrega(entrega.id)" variant="primary" class="m-1">
-                              <b-icon icon="eye"></b-icon>
-                          </b-button>
-                          <b-button @click="editarEntrega(entrega)" variant="warning" class="mr-2">
-                              <b-icon icon="pencil"></b-icon>
-                          </b-button>
-                          <b-button @click="eliminarEntrega(entrega.id)" variant="danger">
-                              <b-icon icon="trash"></b-icon>
-                          </b-button>
-                      </div>
-                  </div> 
-              </b-list-group-item>
-          </b-list-group>
-            <div class="text-end mt-3">
-              <b-button variant="success" @click="crearEntrega(id)">Crear Entrega</b-button>
-          </div>
-
+    <div class="container" >
+      <div class="accordion" role="tablist" v-for="entrega in entregas" :key="entrega.id">
+        <b-card no-body class="mb-1">
+          <b-card-header header-tag="header" class="p-1" role="tab">
+            <b-button block v-b-toggle="'accordion-' + entrega.id"   variant="info">{{ entrega.tipo_revision.nombre }}</b-button>
+          </b-card-header>
+          <b-collapse :id="'accordion-' + entrega.id" visible accordion="my-accordion" role="tabpanel">
+            <b-card-body>
+              <b-card-text  class="fw-lighter">Descripcion:</b-card-text>
+              <b-card-text>{{ entrega.descripcion_entrega }}</b-card-text>
+            </b-card-body>
+          </b-collapse>
         </b-card>
-        <!-- <h3 >Entregas de {{ proyecto.nombre }}</h3>
-        <b-card>
-        </b-card> -->
+      </div>
     </div>
 </template>
 
