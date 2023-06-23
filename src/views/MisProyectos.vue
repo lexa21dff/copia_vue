@@ -9,17 +9,17 @@
             </b-card-header>
             <b-collapse :id="'accordion-' + inscrito.id" visible accordion="my-accordion" role="tabpanel">
               <b-card-body >
+                <b-table sticky-header :items="items" head-variant="light"></b-table>
                 <b-card no-body class="mb-1">
                   <b-card-header header-tag="header" class="p-1" role="tab">
-                    <b-button block v-b-toggle.accordion-1 variant="info">Accordion 1</b-button>
+                    <b-button block v-b-toggle.accordion-1 variant="info">integrantes</b-button>
                   </b-card-header>
                   <b-collapse id="accordion-1" visible accordion="my-accordion" role="tabpanel">
                     <b-card-body>
-                      <b-card-text>I start opened because <code>visible</code> is <code>true</code></b-card-text>
-                      <b-card-text>{{ text }}</b-card-text>
+                      <b-table sticky-header :items="items" head-variant="light"></b-table>
                     </b-card-body>
                   </b-collapse>
-                </b-card>
+                </b-card> 
                 <!-- <b-card> 
                   <p class="card-text">{{proyecto.nombre_proyecto}}</p>
                   <b-button  v-b-toggle="'collapse-' + inscrito.id + '-' + proyecto.id + '-inner'" size="sm">descripcion</b-button>
@@ -45,6 +45,20 @@ import axios from 'axios'
   export default {
     data() {
       return {
+        items: [
+          { heading1: 'table cell', heading2: 'table cell', heading3: 'table cell' },
+          { heading1: 'table cell', heading2: 'table cell', heading3: 'table cell' },
+          { heading1: 'table cell', heading2: 'table cell', heading3: 'table cell' },
+          { heading1: 'table cell', heading2: 'table cell', heading3: 'table cell' },
+          { heading1: 'table cell', heading2: 'table cell', heading3: 'table cell' },
+          { heading1: 'table cell', heading2: 'table cell', heading3: 'table cell' },
+          { heading1: 'table cell', heading2: 'table cell', heading3: 'table cell' },
+          { heading1: 'table cell', heading2: 'table cell', heading3: 'table cell' },
+          { heading1: 'table cell', heading2: 'table cell', heading3: 'table cell' },
+          { heading1: 'table cell', heading2: 'table cell', heading3: 'table cell' },
+          { heading1: 'table cell', heading2: 'table cell', heading3: 'table cell' },
+          { heading1: 'table cell', heading2: 'table cell', heading3: 'table cell' }
+        ],
         inscritos:null,
         proyecto:null
       }
