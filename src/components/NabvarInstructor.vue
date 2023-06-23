@@ -13,17 +13,15 @@
   
         <b-navbar-nav class="ml-auto">
           <!-- Enlaces de router a la derecha -->
-          <b-nav-item to="/proyectos">Proyectos</b-nav-item>
+          <b-nav-item to="/lista-proyecto">Proyectos</b-nav-item>
           
           <b-nav-item-dropdown text="Fichas" right>
-            <b-dropdown-item to="/crear-proyecto">Crear grupo</b-dropdown-item>
-            <b-dropdown-item to="/crear-proyecto">Ver Grupo</b-dropdown-item>
+            <b-dropdown-item to="/crear-proyecto">Agregar Fichas</b-dropdown-item>
+            <b-dropdown-item to="/mis-proyectos">Ver fichas</b-dropdown-item>
           </b-nav-item-dropdown>
-          <b-nav-item-dropdown text="Mis Proyectos" right>
-            <b-dropdown-item to="/crear-proyecto">Crear Proyecto</b-dropdown-item>
-            <b-dropdown-item to="/ver-proyecto">Ver Proyecto</b-dropdown-item>
-          </b-nav-item-dropdown>
-          <b-nav-item to="/mis-proyectos">{{ rol }}</b-nav-item>
+          
+          <b-nav-item to="/mis-proyectos">{{ nombre }}<span>({{ rol }})</span></b-nav-item>
+          
           <b-nav-item  @click="logout()">cerrar sesion</b-nav-item>
         </b-navbar-nav>
       </b-collapse>
@@ -38,6 +36,7 @@
   export default {
     data() {
           return {
+            nombre:this.$store.state.perfil.first_name,
               rol: this.$store.state.rol,
               
           }

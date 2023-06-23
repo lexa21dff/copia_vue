@@ -7,6 +7,7 @@
           <CalificarEntrega></CalificarEntrega>
         </div>
         <div v-else>
+          {{ rol }}
           <Proyecto></Proyecto>
           <Entrega></Entrega> 
 

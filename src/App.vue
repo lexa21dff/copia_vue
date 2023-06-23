@@ -2,7 +2,7 @@
   <div >
     <nav>
       <template v-if="$store.state.user.isAuthenticated">
-        <template v-if="rol ='Aprendiz' ">
+        <template v-if="rol =='aprendiz' ">
           <NabvarAprendiz></NabvarAprendiz>
         </template>
         <template v-else>

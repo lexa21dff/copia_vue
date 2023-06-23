@@ -8,8 +8,19 @@
               <b-button @click="getProyecto(inscrito.ficha.id)" block v-b-toggle="'accordion-' + inscrito.id" variant="info">Ficha: {{ inscrito.ficha.codigo }}</b-button>
             </b-card-header>
             <b-collapse :id="'accordion-' + inscrito.id" visible accordion="my-accordion" role="tabpanel">
-              <b-card-body v-for="proyecto in proyecto" :key="proyecto.id">
-                <b-card> 
+              <b-card-body >
+                <b-card no-body class="mb-1">
+                  <b-card-header header-tag="header" class="p-1" role="tab">
+                    <b-button block v-b-toggle.accordion-1 variant="info">Accordion 1</b-button>
+                  </b-card-header>
+                  <b-collapse id="accordion-1" visible accordion="my-accordion" role="tabpanel">
+                    <b-card-body>
+                      <b-card-text>I start opened because <code>visible</code> is <code>true</code></b-card-text>
+                      <b-card-text>{{ text }}</b-card-text>
+                    </b-card-body>
+                  </b-collapse>
+                </b-card>
+                <!-- <b-card> 
                   <p class="card-text">{{proyecto.nombre_proyecto}}</p>
                   <b-button  v-b-toggle="'collapse-' + inscrito.id + '-' + proyecto.id + '-inner'" size="sm">descripcion</b-button>
                   <b-collapse :id="'collapse-' + inscrito.id + '-' + proyecto.id + '-inner'"  class="mt-2">
@@ -18,7 +29,7 @@
                   <div class="text-end mt-3">
                     <b-button variant="success" @click="verProyecto(proyecto.id)">{{ proyecto.calificacion }}</b-button>
                   </div> 
-                </b-card>
+                </b-card> -->
               </b-card-body>
             </b-collapse>
           </b-card>
@@ -59,7 +70,7 @@ import axios from 'axios'
       }
     },
     async mounted(){
-      await this.getEntregas(3)
+      await this.getEntregas(6)
     }
   }
 </script>
